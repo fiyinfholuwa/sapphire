@@ -5,10 +5,9 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">All Students</h4>
+                    <h4 class="card-title">All Students    <a class="btn btn-primary btn-sm text-white" href="{{route('users.export')}}">Export CSV</a></h4>
                     <div class="bg-white p-3   align-items-center">
                 
-
 
                 <div class="card-body">
                     <div class="table-responsive">

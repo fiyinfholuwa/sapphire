@@ -7,7 +7,7 @@
 						<div class="col-md-12">
 							<div class="card">
 								<div class="card-header">
-									<h4 class="card-title">All Free Master Class Attendees</h4>
+									<h4 class="card-title">All Free Master Class Attendees  <a class="btn btn-info btn-sm text-white" href="{{route('masterclass.export')}}">Export CSV</a></h4>
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">

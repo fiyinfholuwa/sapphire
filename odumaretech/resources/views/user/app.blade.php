@@ -202,6 +202,29 @@
 							</div>
 						</li>
 
+						<li class="nav-item">
+							<a data-toggle="collapse" href="#basess">
+								<i class="fas fa-sticky-note"></i>
+								<p>Manage Final Project</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="basess">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="{{route('project.user.view')}}">
+											<span class="sub-item">My Projects</span>
+										</a>
+									</li>	
+									<li>
+										<a href="{{route('project.submitted.user')}}">
+											<span class="sub-item">View Submitted </br> Projects</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+
+
 						
 						<li class="nav-item">
 							<a data-toggle="collapse" href="#post">
@@ -281,6 +304,15 @@
 							
 							</a>
 						</li>
+
+						<li class="nav-item">
+							<a href="{{route('transaction.user.all')}}">
+							<i class="fa fa-exchange-alt"></i>
+								<p>Transactions History</p>
+							
+							</a>
+						</li>
+
 
 						<li class="nav-item">
 							<a href="{{route('user.password.view')}}">

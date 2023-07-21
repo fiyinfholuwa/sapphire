@@ -85,6 +85,12 @@ return [
                 'log',
             ],
         ],
+        'view' => [
+            'paths' => [
+                resource_path('views/mail'),
+            ],
+        ],
+        
     ],
 
     /*

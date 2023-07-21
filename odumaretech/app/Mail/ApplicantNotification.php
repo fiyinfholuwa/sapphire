@@ -40,6 +40,7 @@ class ApplicantNotification extends Mailable
     {
         return new Content(
             view: 'mail.applicant_notification',
+
         );
     }
 

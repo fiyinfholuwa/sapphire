@@ -18,9 +18,13 @@
                                     <th>S/N</th>
                                     <th>ReferenceId</th>
                                     <th>Email</th>
+                                    <th>Amount</th>
                                     <th>Course Title</th>
                                     <th>Payment Method</th>
+                                    <th>Admission Status</th>
+                                    <th>Payment Type</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                     
                                 </tr>
                             </thead>
@@ -33,15 +37,39 @@
                              <td>{{$i++;}}</td>
                              <td>{{$pay->referenceId}}</td>
                              <td>{{$pay->user_email}}</td>
+                             <td>#{{$pay->amount}}</td>
                              <td>{{$pay->course_name->title}}</td>
                              <td>{{$pay->payment}}</td>
+                             <td> @if($pay->admission_status === "accepted")
+                                <span class="btn btn-success text-white btn-sm">Accepted </span>
+                                @else
+                                <span class="btn btn-danger text-white btn-sm">Locked </span>
+                                @endif
+                             </td>
+
+                             <td> @if($pay->payment_type === "full")
+                                <span class="btn btn-success text-white btn-sm">Full </span>
+                                @else
+                                <span class="btn btn-warning text-white btn-sm">Installmental </span>
+                                @endif
+                             </td>
+
                              <td> @if($pay->status === "paid")
                                 <span class="btn btn-success text-white btn-sm"> {{$pay->status}} </span>
                                 @else
                                 <span class="btn btn-warning text-white btn-sm"> {{$pay->status}} </span>
                                 @endif
                              </td> 
-                            </tr>
+                            
+                            <td> @if($pay->payment_type === "full")
+                                <span class="btn btn-success text-white btn-sm">Verifed</span>
+                                @else
+                                <a href="#" data-toggle="modal" data-target="#pay_{{$pay->id}}" ><button class="btn btn-info btn-sm"><i class="fas fa-lock"></i> Lock User Account</button></a>
+                            </td>
+                                @endif
+                             </td>
+
+                             @include('admin.modal.lockUser')
                              @endforeach
                             </tbody>
                            

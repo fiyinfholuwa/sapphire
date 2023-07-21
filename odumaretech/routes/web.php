@@ -13,6 +13,7 @@ use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InnovationController;
 use App\Http\Controllers\OtherPagesController;
+use App\Http\Controllers\ExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,10 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/admin/innovation/delete/{id}', 'innovation_delete')->name('innovation.delete');
     Route::get('/admin/innovation/edit/{id}', 'innovation_edit')->name('innovation.edit');
     Route::post('/admin/innovation/update/{id}', 'innovation_update')->name('innovation.update');
+    Route::get('/admin/password/view/', 'admin_password_view')->name('admin.password.view');
+    Route::post('/admin/password/change/', 'admin_password_change')->name('admin.password.change');
+    
+    Route::post('/admin/user/lock/{id}', 'user_lock')->name('user.lock');
 });
 
 Route::controller(CourseController::class)->group(function () {
@@ -121,6 +126,9 @@ Route::controller(PaymentController::class)->group(function () {
     // Route::get('/contact', 'contact')->name('contact');
     // Route::post('/contact/save', 'contact_save')->name('contact.save');
     Route::get('/admin/transactions/all', 'transactions')->name('transaction.all');
+    Route::get('/user/transactions/all', 'transactions_user')->name('transaction.user.all');
+    Route::post('/payment/conplete/{id}', 'user_complete')->name('user.complete.payment');
+    Route::get('/payment/callback/user', 'user_complete_callback')->name('pay.callback.user.complete');
     // Route::post('/admin/contact/delete/{id}', 'message_delete')->name('contact.delete');
 });
 
@@ -137,6 +145,17 @@ Route::controller(OtherPagesController::class)->group(function () {
     Route::get('/refund/policy', 'policy')->name('policy');
     Route::get('/term/condition', 'terms')->name('terms');
     Route::get('/privacy/policy', 'privacy')->name('privacy');
+});
+
+Route::controller(ExportController::class)->group(function () {
+    Route::get('/export/users', 'export_users')->name('users.export');
+    Route::get('/export/instructors', 'export_instructor')->name('instructors.export');
+    Route::get('/export/masterclass', 'export_masterclass')->name('masterclass.export');
+    Route::get('/export/company/training', 'export_company_training')->name('company.export');
+    // Route::get('/refund/policy', 'policy')->name('policy');
+    // Route::get('/term/condition', 'terms')->name('terms');
+    // Route::get('/privacy/policy', 'privacy')->name('privacy');
+    
 });
 
 Route::controller(InstructorController::class)->group(function () {
@@ -181,6 +200,12 @@ Route::controller(InstructorController::class)->group(function () {
     Route::get('/instructor/recording/', 'instructor_record')->name('instructor.record');
     Route::get('/instructor/password/view/', 'instructor_password_view')->name('instructor.password.view');
     Route::post('/instructor/password/change/', 'instructor_password_change')->name('instructor.password.change');
+    Route::get('/instructor/project/final', 'project_final_view')->name('project.final.view');
+    Route::post('/instructor/project/final/add', 'project_final_add')->name('project.final.add');
+
+    Route::get('/instructor/project/submitted', 'assess_submitted_project')->name('project.submitted.review');
+    Route::get('/instructor/project/review/{id}', 'view_submitted_project')->name('project.submitted.to');
+    Route::post('/instructor/project/graded/{id}', 'project_instructor_grade')->name('project.review.instructor');
 });
 
 Route::controller(UserController::class)->group(function () {
@@ -205,6 +230,13 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/user/record/', 'user_record')->name('user.record');
     Route::get('/user/password/view/', 'user_password_view')->name('user.password.view');
     Route::post('/user/password/change/', 'user_password_change')->name('user.password.change');
+
+    Route::get('/user/project/view', 'project_view_user')->name('project.user.view');
+    // Route::get('/user/assignment/all/{id}', 'assignment_user_all')->name('assignment.user.all');
+    Route::get('/user/project/submit/{id}', 'project_submit')->name('project.submit');
+    Route::post('/user/project/submit/save/{id}', 'project_submit_user')->name('project.submit.user');
+    Route::get('/user/project/submitted', 'project_submitted')->name('project.submitted.user');
+    Route::get('/user/download/certificate/{id}', 'download_certificate')->name('download.certificate');
 });
 
 require __DIR__.'/auth.php';

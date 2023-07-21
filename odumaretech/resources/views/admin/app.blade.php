@@ -103,21 +103,26 @@
 						<li class="nav-item dropdown hidden-caret">
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 								<div class="avatar-sm">
-								<img src="https://cdn-icons-png.flaticon.com/512/6386/6386976.png" alt="..." class="avatar-img rounded-circle">
+								<img src="https://cdn2.vectorstock.com/i/1000x1000/83/96/user-icon-avatar-people-white-background-vector-46038396.jpg" alt="..." class="avatar-img rounded-circle">
 								</div>
 							</a>
 							<ul class="dropdown-menu dropdown-user animated fadeIn">
 								<li>
 									<div class="user-box">
-										<div class="avatar-lg"><img src="https://cdn-icons-png.flaticon.com/512/6386/6386976.png" alt="..." class="avatar-img rounded-circle"></div>
+										<div class="avatar-lg"><img src="https://cdn2.vectorstock.com/i/1000x1000/83/96/user-icon-avatar-people-white-background-vector-46038396.jpg" alt="..." class="avatar-img rounded-circle"></div>
 										<div class="u-text">
-											<h3>hello</h3>
+											<h3>hello Admin</h3>
 										</div>
 									</div>
 								</li>
 								<li>
 								<a class="dropdown-item text-info " style="font-weight:600;" target="_blank" href="{{route('home')}}" >Visit Main Website</a>
 								</li>
+								<li>
+								<a class="dropdown-item text-info " style="font-weight:600;"  href="{{route('admin.password.view')}}" >Change Password</a>
+								</li>
+								
+								<li>
 								<li>
 								<a class="dropdown-item text-danger" style="font-weight:600;" href="{{route('logout')}}" >Logout</a>
 								</li>

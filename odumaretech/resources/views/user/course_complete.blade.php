@@ -24,6 +24,7 @@
 											<div class="numbers">
 												<p class="card-category">{{$detail->course_name->title}}</p>
 												<!-- <h4 class="card-title">0</h4> -->
+												<a href="{{route('download.certificate', $detail->course_name->id)}}" class="btn btn-danger btn-sm" >Download Certificate</a>
 											</div>
 										</div>
 									</div>

@@ -7,7 +7,7 @@
 						<div class="col-md-12">
 							<div class="card">
 								<div class="card-header">
-									<h4 class="card-title">All Corporate Training Requests</h4>
+									<h4 class="card-title">All Corporate Training Requests  <a class="btn btn-success btn-sm text-white" href="{{route('company.export')}}">Export CSV</a></h4>
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">

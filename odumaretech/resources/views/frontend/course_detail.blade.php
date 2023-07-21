@@ -58,7 +58,17 @@
 									<input type="radio" value="paystack" name="payment" required/> </br>
 									<label><img height="50px" width="100px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/1200px-Stripe_Logo%2C_revised_2016.svg.png"/></label>
 									<input type="radio"  value="stripe" name="payment"/> </br>
+
+
+									<h4>Payment Type</h4>
+									<label>Full Payment </br> (Enjoy Discount and Coupon)</label>
+									<input type="radio" value="full" name="payment_type" required/> </br>
+									<label>Installment (70% of the Actual Cost)</label>
+									<input type="radio"  value="partial" name="payment_type"/> </br>
+
+
 									<input type="hidden" name="course_id" value="{{$course->id}}"/>
+									
 									@if(Auth::check())
 									<input type="hidden" name="user_email" value="{{Auth::user()->email}}"/>
 									@if($course->discount == 0 || $course->discount == null)

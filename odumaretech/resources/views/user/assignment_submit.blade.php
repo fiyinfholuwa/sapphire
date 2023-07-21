@@ -15,7 +15,12 @@
                                 <label for="email2">Assignment Title</label>
                                 <input type="text" class="form-control" id="email2" value="{{$assignment->title}}" readonly required name="title" placeholder="Enter  Assignment Title">
                             </div>
-                            
+                           
+                            <div class="form-group">
+                                <label for="email2">Assignment Description</label>
+                                <input type="text" class="form-control" id="email2" value="{{$assignment->description}}" readonly required name="title" placeholder="Enter  Assignment Title">
+                            </div>
+                           
 
                             <div class="form-group">
                                 <label for="email2">Assignment Attachement (Optional)</label>

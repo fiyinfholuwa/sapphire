@@ -6,18 +6,23 @@ use Illuminate\Http\Request;
 use Auth;
 use Hash;
 use App\Models\ApprovedInstructor;
+use App\Models\AppliedCourse;
 use App\Models\Course;
 use App\Models\Slide;
 use App\Models\Assignment;
 use App\Models\LiveSession;
 use App\Models\InstructorNotification;
 use App\Models\SubmitAssignment;
+use App\Models\SubmitProject;
 use App\Models\InstructorChat;
 use App\Models\UserChat;
 use App\Models\User;
 use App\Models\GitHubLink;
 use App\Models\MeetingLink;
+use App\Models\FinalProject;
 use App\Models\RecordLink;
+use Mail;
+use App\Mail\CourseCompletionMail;
 use Illuminate\Support\Facades\File;
 
 class InstructorController extends Controller
@@ -80,8 +85,8 @@ class InstructorController extends Controller
             $extension = $image->getClientOriginalName();
             $filename = $extension;
             $file_unique_name = uniqid();
-            $image->storeAs( '/slide' , "/" . $file_unique_name . "_syntax" . "." .$filename, 'public');
-            $path = "storage/slide/" . $file_unique_name . "_syntax" . "." .$filename;
+            $image->storeAs( '/slide' , "/" . $file_unique_name . "_odumaretech" . "." .$filename, 'public');
+            $path = "storage/slide/" . $file_unique_name . "_odumaretech" . "." .$filename;
         }else{
             $path = $slide_update->image;
         }
@@ -277,17 +282,61 @@ class InstructorController extends Controller
         );
         return redirect()->route('assignment.submitted.review')->with($notification);
     }
+
+
+    public function project_instructor_grade(Request $request, $id){
+        $assignment = SubmitProject::findOrFail($id);
+        $assignment->status_in = $request->score;
+        $assignment->status = "graded";
+        $assignment->save();
+
+        $course_detail = Course::where('id', '=', $assignment->course_id)->first();
+        $course_name = $course_detail->title;
+        $user_detail = User::where('id', '=', $assignment->user_id)->first();
+        $user_name = $user_detail->first_name;
+        $user_email = $user_detail->email;
+        $update_user =  AppliedCourse::where('user_id', '=', $assignment->user_id)->where('course_id','=', $assignment->course_id)->first();
+        
+        $update_user->update(['status' => "completed"]);
+
+        $mailData = [
+            'name' => $user_name,
+            'course' => $course_name,
+        ];
+        Mail::to($user_email)->send(new CourseCompletionMail($mailData));
+        $notification = array(
+            'message' => 'Project Successfully graded',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('project.submitted.review')->with($notification);
+    }
+
+
     public function assess_submitted_assignment(){
             $courseIds = $this->get_instructor_courses_id();
             $assignments = SubmitAssignment::whereIn('course_id', $courseIds)->get();
             return view('instructor.submitted_assignment', compact('assignments'));
     }
 
+
+    public function assess_submitted_project(){
+        $courseIds = $this->get_instructor_courses_id();
+        $assignments = SubmitProject::whereIn('course_id', $courseIds)->get();
+        return view('instructor.submitted_project', compact('assignments'));
+}
+
+public function view_submitted_project($id){
+    $assignment = SubmitProject::findOrFail($id);
+    return view('instructor.project_review', compact('assignment'));
+}
+
     public function view_submitted_assignment($id){
         $assignment = SubmitAssignment::findOrFail($id);
         return view('instructor.assignment_review', compact('assignment'));
     }
 
+
+    
     public function get_instructor_courses(){
         $fetch_instructor_detail = ApprovedInstructor::where('user_id', '=', Auth::user()->id)->first();
         $course_ids = $fetch_instructor_detail->course_ids;
@@ -425,4 +474,40 @@ class InstructorController extends Controller
     }
 
 }
+
+public function project_final_view(){
+    $project_final = FinalProject::first();
+    $courses = $this->get_instructor_courses();
+    return view('instructor.project', compact('project_final', 'courses'));
+}
+
+public function project_final_add(Request $request, $id=null){
+    if($request->id ==null || $request->id ==""){
+        $new_project = new FinalProject;
+        $new_project->course_id = $request->course_id;
+        $new_project->title = $request->title;
+        $new_project->status = "pending";
+        $new_project->description = $request->description;
+        $new_project->save();
+        $notification = array(
+            'message' => 'Project Successfully Saved',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+
+    }else{
+        $project_update = FinalProject::findOrFail($request->id);
+
+        $project_update->course_id = $request->course_id;
+        $project_update->title = $request->title;
+        $project_update->description = $request->description;
+        $project_update->save();
+        $notification = array(
+            'message' => 'Project Successfully updated',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+    }
+}
+
 }

@@ -262,6 +262,32 @@
 								</ul>
 							</div>
 						</li>
+
+						<li class="nav-item">
+							<a data-toggle="collapse" href="#project">
+							<i class="fa fa-bookmark" aria-hidden="true"></i>
+
+								<p>Manage Course Project</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="project">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="{{route('project.final.view')}}">
+											<span class="sub-item">Manage Final Project</span>
+										</a>
+									</li>
+									<li>
+										<a href="{{route('project.submitted.review')}}">
+											<span class="sub-item">Review Submitted </br> Projects</span>
+										</a>
+									</li>
+									
+								</ul>
+							</div>
+						</li>
+
+
 						<li class="nav-item">
 							<a data-toggle="collapse" href="#notifications">
 							<i class="fa fa-bookmark" aria-hidden="true"></i>

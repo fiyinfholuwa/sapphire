@@ -9,8 +9,10 @@ use App\Models\CompanyTraining;
 use App\Models\Instructor;
 use App\Models\User;
 use App\Models\ApprovedInstructor;
+use App\Models\AppliedCourse;
 use App\Models\InstructorChat;
 use App\Models\Innovation;
+use App\Models\Payment;
 use Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +20,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Mail\ApplicantNotification;
 use App\Mail\CorporateMail;
 use App\Mail\InstructorApply;
+use Auth;
 
 
 class HomeController extends Controller
@@ -214,6 +217,9 @@ class HomeController extends Controller
         }
 
         if($request->status == "approved"){
+            $applicant =  Instructor::findOrFail($id);
+        $applicant->status = $request->status;
+        $applicant->save();
             $prefix = 'Instructor'; // Prefix or school code
         $studentID = $this->generateStudentID($prefix); 
         $password = $this->generateStudentID($request->first_name);
@@ -241,7 +247,8 @@ class HomeController extends Controller
         $mailData = [
             'status' => $request->status,
             'password' => $password,
-            'message' => $message
+            'message' => $message,
+            'email' => $request->email
         ];
         Mail::to($request->email)->send(new ApplicantNotification($mailData));
         $notification = array(
@@ -264,7 +271,8 @@ class HomeController extends Controller
             $mailData = [
                 'status' => $request->status,
                 'password' => "",
-                'message' => $message
+                'message' => $message,
+                'email' => $request->email
             ];
             Mail::to('fiyinfholuwa@gmail.com')->send(new ApplicantNotification($mailData));
             $notification = array(
@@ -371,6 +379,53 @@ class HomeController extends Controller
         return redirect()->route('innovation.all')->with($notification);
     }
 
+    public function user_lock(Request $request, $id){
+
+        // dd(isset($_POST));
+        if(isset($_POST['lock'])){
+            $status = "rejected";
+        }else{
+            $status = "accepted";
+        }
+        $pay_detail = Payment::findOrFail($id);
+        $pay_d = AppliedCourse::where('payment_id', '=', $pay_detail->id)->update(['admission_status' => $status]);
+        $pay_detail->admission_status = $status;
+        $pay_detail->save();
+        $notification = array(
+            'message' => 'Student Admission Successfully updated',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+    }
+
+    public function admin_password_view(){
+        return view('admin.change_password');
+    }
+
+    public function admin_password_change(Request $request){
+    $user = Auth::user();
+    $request->validate([
+        'old_password' => 'required',
+        'new_password' => 'required|min:8|confirmed',
+    ]);
+
+    if (Hash::check($request->old_password, $user->password)) {
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+        $notification = array(
+            'message' => 'Password Changed Successfully',
+            'alert-type' => 'success'
+        );
+        
+        return redirect()->back()->with($notification);
+    }else{
+        $notification = array(
+            'message' => 'Incorrect Password, Please try again.',
+            'alert-type' => 'error'
+        );
+        return redirect()->back()->with($notification);
+    }
+    }
 
 
     public function generateStudentID($prefix, $length = 6) {
